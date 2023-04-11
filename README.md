@@ -9,3 +9,12 @@ tutorials :
     [jpa](https://dzone.com/articles/getting-started-with-jpahibernate)
 
 ![er-diagram](./docs/ER_diagram.png)
+
+# Docker-Compose
+
+Para iniciar los contenedores de MariaDB y PhpMyAdmin ejecuta:
+"""
+docker-compose up -d 
+"""
+
+Posteriormente dirigete en tu navegador a http://localhost:8080 e introduce el usuario y la contraseña del contenedor de mariadb.

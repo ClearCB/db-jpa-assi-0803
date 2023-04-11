@@ -1,0 +1,30 @@
+version: '3'
+
+# Se montan dos contenedores, con un volumen para mantener datos
+# Para conectarte a la MariaDB , accedes a localhost:8080 
+# Usuario y contraseña de MariaDB
+
+
+services:
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: '0808'
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - '3306:3306'
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: '0808'
+    ports:
+      - '8080:80'
+
+volumes:
+  db_data:
+
