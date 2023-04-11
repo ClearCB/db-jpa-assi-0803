@@ -25,6 +25,23 @@ services:
     ports:
       - '8080:80'
 
+  apache:
+    image: php:7.4-apache
+    restart: always
+    volumes:
+      - ./app:/var/www/html
+    ports:
+      - "8090:80"
+    depends_on:
+      - db
+    # Agregamos esta sección para habilitar la extensión mysqli
+    # y reiniciar el contenedor de Apache
+    command: >
+      bash -c "
+        docker-php-ext-install mysqli &&
+        apache2-foreground
+      "
+
 volumes:
   db_data:
 
