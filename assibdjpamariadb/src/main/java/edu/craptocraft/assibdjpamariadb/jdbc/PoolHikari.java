@@ -22,7 +22,7 @@ public class PoolHikari {
 
     private  static void initDatabaseConnectionPool() {
         dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl("jdbc:mariadb://localhost:3306/game");
+        dataSource.setJdbcUrl("jdbc:mariadb://localhost:3306/epicgames");
         dataSource.setUsername("root");
         dataSource.setPassword("0909");
     }
@@ -33,7 +33,7 @@ public class PoolHikari {
         }
     }
 
-    public static void createData(int id, String titulo, String genero, double precio) throws SQLException {
+    public static void createData(int id, String name, String description,String release_date, String platform) throws SQLException {
         System.out.println("\n\t>Añadiendo datos");
 
         Connection connection = dataSource.getConnection();
@@ -41,14 +41,15 @@ public class PoolHikari {
         int rowsInserted;
         try (PreparedStatement statement = connection.prepareStatement(
                 """
-            INSERT INTO juego(id, titulo, genero, precio)
-            values (?,?,?,?)
+            INSERT INTO Games(id, name, description, release_date, platform)
+            values (?,?,?,?,?)
             """
         )) {
             statement.setInt(1, id);
-            statement.setString(2, titulo);
-            statement.setString(3, genero);
-            statement.setDouble(4, precio);
+            statement.setString(2, name);
+            statement.setString(3, description);
+            statement.setString(4, release_date);
+            statement.setString(5, platform);
 
             rowsInserted = statement.executeUpdate();
         }
@@ -64,19 +65,21 @@ public class PoolHikari {
         Connection connection = dataSource.getConnection();
 
         try(PreparedStatement statement =  connection.prepareStatement("""
-            select titulo, genero, precio
-            from juego
-            order by precio DESC 
+            select name, description, release_date, platform
+            from Games
+            order by name DESC 
            """)) {
 
             ResultSet resultSet = statement.executeQuery();
 
             boolean empty = true;
             while (resultSet.next()){
-                String titulo = resultSet.getString(1);
-                String genero = resultSet.getString(2);
-                double precio = resultSet.getInt(3);
-                System.out.println("\t> título : "+ titulo + ", genero: "+ genero+ ", precio: "+ precio );
+                String name = resultSet.getString(1);
+                String description = resultSet.getString(2);
+                String release_date = resultSet.getString(2);
+                String platform = resultSet.getString(2);
+
+                System.out.println("\t> título : "+ name + ", descripción: "+ description+ ", fecha de salida: "+ release_date+ " , plataforma "+ platform);
                 empty = false;
             }
             if (empty){
@@ -88,19 +91,19 @@ public class PoolHikari {
         connection.close();
     }
 
-    public static void updateData(int id, double precio) throws  SQLException {
+    public static void updateData(int id, String platform) throws  SQLException {
 
         System.out.println("\n\t>Actualizando dato");
 
         Connection connection = dataSource.getConnection();
 
         try(PreparedStatement statement = connection.prepareStatement("""
-            UPDATE juego 
-            set precio = ?
+            UPDATE Games 
+            set platform = ?
             where id = ?
         """)) {
 
-            statement.setDouble(1, precio);
+            statement.setString(1, platform);
             statement.setInt(2, id);
 
             int rowsUpdated = statement.executeUpdate();
@@ -112,16 +115,16 @@ public class PoolHikari {
         }
     }
 
-    public static void deleteData(String titulo) throws SQLException{
+    public static void deleteData(int id) throws SQLException{
 
         Connection connection = dataSource.getConnection();
 
         try(PreparedStatement statement = connection.prepareStatement("""
-                DELETE FROM juego
-                WHERE titulo LIKE ?
+                DELETE FROM Games
+                WHERE id LIKE ?
         """)) {
 
-            statement.setString(1, titulo);
+            statement.setInt(1, id);
             int rowsDeleted = statement.executeUpdate();
             System.out.println("\n\t>Filas eliminadas: " + rowsDeleted);
         } finally {
