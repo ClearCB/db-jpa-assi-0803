@@ -3,8 +3,10 @@ package edu.craptocraft.assibdjpamariadb;
 import com.zaxxer.hikari.HikariDataSource;
 import edu.craptocraft.assibdjpamariadb.jdbc.PoolHikari;
 import edu.craptocraft.assibdjpamariadb.jpa.JpaService;
+import edu.craptocraft.assibdjpamariadb.jpa.Users;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Hello world!
@@ -13,6 +15,7 @@ import java.sql.SQLException;
 public class App 
 {
     private static HikariDataSource poolHikari;
+    private static JpaService jpaService;
     public static void main( String[] args ) throws SQLException {
         System.out.println( "Programando con JDBC y JPA, que emoción!" );
 
@@ -36,6 +39,29 @@ public class App
 
         System.out.println("\tJPA en acción: ");
 
+/*
+        jpaService = JpaService.getInstance();
+*/
+//        printAllUsers();
+
+
 
     }
+
+    private static void printAllUsers(){
+
+        if (jpaService == null){
+            jpaService = JpaService.getInstance();
+        }
+
+        List<Users> usersList = jpaService.runInTransactions(entityManager -> entityManager.createQuery(
+                "select p from Users p", Users.class).getResultList()
+        );
+
+        usersList.stream()
+                .map(user -> user.getUsername() + ":" + user.getEmail())
+                .forEach(System.out::println);
+
+    }
+
 }

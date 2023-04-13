@@ -14,7 +14,7 @@ public class JpaService {
     private EntityManagerFactory entityManagerFactory;
 
     private JpaService(){
-        entityManagerFactory = Persistence.createEntityManagerFactory("jpa-demo-local");
+        entityManagerFactory = Persistence.createEntityManagerFactory("mariadb-connection");
     }
 
     public static JpaService getInstance(){
