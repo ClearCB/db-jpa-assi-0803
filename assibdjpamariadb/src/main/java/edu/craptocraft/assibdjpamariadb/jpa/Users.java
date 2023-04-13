@@ -1,6 +1,5 @@
 package edu.craptocraft.assibdjpamariadb.jpa;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -9,28 +8,29 @@ import jakarta.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Games")
+@Table(name = "Users")
 public class Users {
 
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     private Integer id;
 
-    @Column(name="username")
+    @Column(name = "username")
     private String username;
 
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
 
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
 
-    @Column(name="registration_date")
+    @Column(name = "registration_date")
     private String registration_date;
 
-    public Users(){}
+    public Users() {
+    }
 
-    public Users(Integer id, String username, String password, String email, String registration_date){
+    public Users(Integer id, String username, String password, String email, String registration_date) {
 
         this.id = id;
         this.username = username;
@@ -39,7 +39,6 @@ public class Users {
         this.registration_date = registration_date;
 
     }
-
 
     public Integer getId() {
         return id;
@@ -81,11 +80,12 @@ public class Users {
         this.registration_date = registration_date;
     }
 
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Users that = (Users) o;
         return Objects.equals(id, that.id);
     }
@@ -94,7 +94,5 @@ public class Users {
     public int hashCode() {
         return Objects.hash(id);
     }
-
-
 
 }

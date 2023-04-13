@@ -13,42 +13,38 @@ public class JpaService {
 
     private EntityManagerFactory entityManagerFactory;
 
-    private JpaService(){
+    private JpaService() {
         entityManagerFactory = Persistence.createEntityManagerFactory("mariadb-connection");
     }
 
-    public static JpaService getInstance(){
+    public static JpaService getInstance() {
+
         return instance == null ? instance = new JpaService() : instance;
     }
 
-    public void shutdown(){
-        if (entityManagerFactory != null){
+    public void shutdown() {
+        if (entityManagerFactory != null) {
             entityManagerFactory.close();
+            instance = null;
         }
     }
 
-    public EntityManagerFactory getEntityManagerFactory() {
-        return entityManagerFactory;
-    }
+    public <T> T runInTransaction(Function<EntityManager, T> function) {
 
-    public <T> T runInTransactions(Function<EntityManager, T> function){
-
-        EntityManager entityManager =  entityManagerFactory.createEntityManager();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
 
-
-        boolean success = false;
-
         transaction.begin();
+        boolean success = false;
 
         try {
             T returnValue = function.apply(entityManager);
             success = true;
-            return  returnValue;
+            return returnValue;
 
         } finally {
 
-            if (success){
+            if (success) {
                 transaction.commit();
             } else {
                 transaction.rollback();

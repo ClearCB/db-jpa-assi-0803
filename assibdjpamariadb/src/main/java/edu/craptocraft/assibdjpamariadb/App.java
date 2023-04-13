@@ -12,19 +12,19 @@ import java.util.List;
  * Hello world!
  *
  */
-public class App 
-{
-    private static HikariDataSource poolHikari;
+public class App {
+
     private static JpaService jpaService;
-    public static void main( String[] args ) throws SQLException {
-        System.out.println( "Programando con JDBC y JPA, que emoción!" );
+
+    public static void main(String[] args) throws SQLException {
+        System.out.println("Programando con JDBC y JPA, que emoción!");
 
         System.out.println("\tJDBC en acción: ");
-        //Parte JDBC
-        //Inicamos conexión Pool
+        // Parte JDBC
+        // Inicamos conexión Pool
         PoolHikari.getInstance();
 
-        //CRUD
+        // CRUD
         PoolHikari.readData();
         PoolHikari.createData(20, "Spider-Man: Revolutions", "Un juego de spiderman revolucionado", "2023-07-25", "PC");
         PoolHikari.readData();
@@ -33,30 +33,21 @@ public class App
         PoolHikari.deleteData(20);
         PoolHikari.readData();
 
-        //Cerramos conexión Pool
+        // Cerramos conexión Pool
         PoolHikari.closeDatabaseConnectionPool();
-
 
         System.out.println("\tJPA en acción: ");
 
-/*
         jpaService = JpaService.getInstance();
-*/
-//        printAllUsers();
 
-
+        printAllUsers(jpaService);
 
     }
 
-    private static void printAllUsers(){
+    private static void printAllUsers(JpaService jpaService) {
 
-        if (jpaService == null){
-            jpaService = JpaService.getInstance();
-        }
-
-        List<Users> usersList = jpaService.runInTransactions(entityManager -> entityManager.createQuery(
-                "select p from Users p", Users.class).getResultList()
-        );
+        List<Users> usersList = jpaService.runInTransaction(entityManager -> entityManager.createQuery(
+                "select p from Users p", Users.class).getResultList());
 
         usersList.stream()
                 .map(user -> user.getUsername() + ":" + user.getEmail())
