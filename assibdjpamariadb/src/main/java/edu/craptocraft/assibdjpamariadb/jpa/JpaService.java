@@ -6,6 +6,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
 import java.util.function.Function;
+import java.util.List;
 
 public class JpaService {
 
@@ -51,6 +52,46 @@ public class JpaService {
             }
 
         }
+    }
+
+    public List<Printable> readData(String table) {
+
+        return this.getInstance().runInTransaction(entityManager -> entityManager.createQuery(
+                "select p from " + table + " p", Printable.class).getResultList());
+    }
+
+    public void printData(List<Printable> data) {
+
+        data.stream()
+                .forEach(Printable::print);
+
+    }
+
+    public void createData(String table, int id, String... params) {
+
+        StringBuilder createStatement = new StringBuilder();
+
+        createStatement.append("insert into" + table + "values (");
+
+        for (String param : params) {
+
+            createStatement.append(param + ",");
+        }
+
+        createStatement.deleteCharAt(createStatement.toString().length() - 1);
+        createStatement.append(");");
+
+        JpaService.getInstance().runInTransaction(entityManager -> entityManager.createQuery(
+                createStatement.toString(), Printable.class).getResultList());
+
+    }
+
+    public void updateData() {
+
+    }
+
+    public void deleteData() {
+
     }
 
 }

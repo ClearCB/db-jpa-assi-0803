@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "Users")
-public class Users {
+public class Users implements Printable {
 
     @Id
     @Column(name = "id")
@@ -95,4 +95,10 @@ public class Users {
         return Objects.hash(id);
     }
 
+    @Override
+    public void print() {
+
+        System.out.println("\n\t>" + this.getUsername() + ":" + this.getEmail());
+
+    }
 }

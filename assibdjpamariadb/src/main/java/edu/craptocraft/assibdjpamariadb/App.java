@@ -1,12 +1,13 @@
 package edu.craptocraft.assibdjpamariadb;
 
-import com.zaxxer.hikari.HikariDataSource;
 import edu.craptocraft.assibdjpamariadb.jdbc.PoolHikari;
 import edu.craptocraft.assibdjpamariadb.jpa.JpaService;
-import edu.craptocraft.assibdjpamariadb.jpa.Users;
+import edu.craptocraft.assibdjpamariadb.jpa.Printable;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Hello world!
@@ -17,6 +18,10 @@ public class App {
     private static JpaService jpaService;
 
     public static void main(String[] args) throws SQLException {
+
+        // Eliminar los logs innecesarios para la aplicación
+        Logger.getLogger("org.hibernate").setLevel(Level.OFF);
+
         System.out.println("Programando con JDBC y JPA, que emoción!");
 
         System.out.println("\tJDBC en acción: ");
@@ -40,18 +45,10 @@ public class App {
 
         jpaService = JpaService.getInstance();
 
-        printAllUsers(jpaService);
-
-    }
-
-    private static void printAllUsers(JpaService jpaService) {
-
-        List<Users> usersList = jpaService.runInTransaction(entityManager -> entityManager.createQuery(
-                "select p from Users p", Users.class).getResultList());
-
-        usersList.stream()
-                .map(user -> user.getUsername() + ":" + user.getEmail())
-                .forEach(System.out::println);
+        List<Printable> users = jpaService.readData("Users");
+        jpaService.printData(users);
+        // jpaService.createData("Users", 13, "Hello", "pass122",
+        // "abelcasasabelcas.com", "12/12/1223");
 
     }
 
