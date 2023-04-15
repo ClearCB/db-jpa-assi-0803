@@ -1,12 +1,14 @@
 package edu.craptocraft.assibdjpamariadb;
 
-import com.zaxxer.hikari.HikariDataSource;
 import edu.craptocraft.assibdjpamariadb.jdbc.PoolHikari;
 import edu.craptocraft.assibdjpamariadb.jpa.JpaService;
 import edu.craptocraft.assibdjpamariadb.jpa.Users;
+import edu.craptocraft.assibdjpamariadb.jpa.Data;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Hello world!
@@ -17,6 +19,10 @@ public class App {
     private static JpaService jpaService;
 
     public static void main(String[] args) throws SQLException {
+
+        // Eliminar los logs innecesarios para la aplicación
+        Logger.getLogger("org.hibernate").setLevel(Level.OFF);
+
         System.out.println("Programando con JDBC y JPA, que emoción!");
 
         System.out.println("\tJDBC en acción: ");
@@ -38,20 +44,36 @@ public class App {
 
         System.out.println("\tJPA en acción: ");
 
+        // Creamos instancia del servicio de jpa
         jpaService = JpaService.getInstance();
 
-        printAllUsers(jpaService);
+        // Recuperamos los valores de Users
+        List<Data> users = jpaService.readData("Users");
+        jpaService.printData(users);
 
-    }
+        System.out.println("\n\t Insertamos al usuario Abel Casas");
 
-    private static void printAllUsers(JpaService jpaService) {
+        Users newUser = new Users(13555, "Hello22", "pass122",
+                "abelcasasabelcas.com", "2000/2/12");
 
-        List<Users> usersList = jpaService.runInTransaction(entityManager -> entityManager.createQuery(
-                "select p from Users p", Users.class).getResultList());
+        // Creamos un nuevo usuario y volvemos a recuperar los valores
+        jpaService.createData(newUser);
+        users = jpaService.readData("Users");
+        jpaService.printData(users);
 
-        usersList.stream()
-                .map(user -> user.getUsername() + ":" + user.getEmail())
-                .forEach(System.out::println);
+
+        System.out.println("\n\t Actualizamos al usuario Abel Casas");
+        // Acutalizamos el mismo usuario creado
+        newUser.setEmail("sebastian@example.com");
+        jpaService.updateData(newUser);
+
+        users = jpaService.readData("Users");
+        jpaService.printData(users);
+
+
+        // Borramos el usuario
+        jpaService.deleteData("Users", "13555");
+
 
     }
 

@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "Users")
-public class Users {
+public class Users implements Data {
 
     @Id
     @Column(name = "id")
@@ -95,4 +95,50 @@ public class Users {
         return Objects.hash(id);
     }
 
+    @Override
+    public void print() {
+
+        System.out.println("\n\t>" + this.getUsername() + ":" + this.getEmail());
+
+    }
+
+    @Override
+    public void createData() {
+
+        StringBuilder createStatement = new StringBuilder();
+
+        createStatement.append(
+                "insert into Users (id, username, password, email, registration_date) values (?,?,?,?,?)");
+
+        JpaService.getInstance().runInTransaction(entityManager -> entityManager.createNativeQuery(
+                createStatement.toString())
+                .setParameter(1, this.getId())
+                .setParameter(2, this.getUsername())
+                .setParameter(3, this.getPassword())
+                .setParameter(4, this.getEmail())
+                .setParameter(5, this.getRegistration_date())
+                .executeUpdate());
+
+    }
+
+    @Override
+    public void updateData(){
+
+        StringBuilder createStatement = new StringBuilder();
+
+        createStatement.append(
+                "update Users set username = ? , password = ? , email = ? , registration_date = ? where id = ?"
+        );
+
+        JpaService.getInstance().runInTransaction(entityManager -> entityManager.createNativeQuery(
+                createStatement.toString())
+                .setParameter(1, this.getUsername())
+                .setParameter(2 , this.getPassword())
+                .setParameter(3, this.getEmail())
+                .setParameter(4, this.getRegistration_date())
+                .setParameter(5, this.getId())
+                .executeUpdate()
+        );
+
+    }
 }

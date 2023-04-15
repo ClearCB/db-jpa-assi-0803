@@ -11,6 +11,10 @@ public class PoolHikari {
 
     private static HikariDataSource dataSource = null;
 
+    private PoolHikari() {
+        // Avoid problems
+    };
+
     public static HikariDataSource getInstance() {
 
         if (dataSource == null) {
@@ -21,6 +25,7 @@ public class PoolHikari {
     }
 
     private static void initDatabaseConnectionPool() {
+
         dataSource = new HikariDataSource();
         dataSource.setJdbcUrl("jdbc:mariadb://localhost:3306/epicgames");
         dataSource.setUsername("root");
