@@ -4,7 +4,5 @@ public interface Data {
 
     void print();
 
-    void createData();
-
     void updateData();
 }
