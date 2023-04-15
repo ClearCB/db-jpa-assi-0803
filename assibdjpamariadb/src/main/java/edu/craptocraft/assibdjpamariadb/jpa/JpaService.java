@@ -57,6 +57,12 @@ public class JpaService {
                 "select p from " + table + " p", Data.class).getResultList());
     }
 
+    public List<Data> readOne(String table, int id) {
+
+        return JpaService.getInstance().runInTransaction(entityManager -> entityManager.createQuery(
+                "select p from " + table + " p where id = " + id, Data.class).getResultList());
+    }
+
     public void printData(List<Data> data) {
 
         data.stream()

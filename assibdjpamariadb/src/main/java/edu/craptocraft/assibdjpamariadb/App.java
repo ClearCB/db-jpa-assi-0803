@@ -69,8 +69,8 @@ public class App {
         newUser1.setEmail("sebastian@example.com");
         jpaService.updateData(newUser1);
 
-        users = jpaService.readData("Users");
-        jpaService.printData(users);
+        List<Data> user = jpaService.readOne("Users", 132555);
+        jpaService.printData(user);
 
         // Borramos el usuario
         jpaService.deleteData("Users", "13555");
