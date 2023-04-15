@@ -2,7 +2,8 @@ package edu.craptocraft.assibdjpamariadb;
 
 import edu.craptocraft.assibdjpamariadb.jdbc.PoolHikari;
 import edu.craptocraft.assibdjpamariadb.jpa.JpaService;
-import edu.craptocraft.assibdjpamariadb.jpa.Printable;
+import edu.craptocraft.assibdjpamariadb.jpa.Users;
+import edu.craptocraft.assibdjpamariadb.jpa.Data;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -45,10 +46,15 @@ public class App {
 
         jpaService = JpaService.getInstance();
 
-        List<Printable> users = jpaService.readData("Users");
+        List<Data> users = jpaService.readData("Users");
         jpaService.printData(users);
-        // jpaService.createData("Users", 13, "Hello", "pass122",
-        // "abelcasasabelcas.com", "12/12/1223");
+
+        Users newUser = new Users(13555, "Hello22", "pass122",
+                "abelcasasabelcas.com", "2000/2/12");
+        jpaService.createData(newUser);
+
+        users = jpaService.readData("Users");
+        jpaService.printData(users);
 
     }
 

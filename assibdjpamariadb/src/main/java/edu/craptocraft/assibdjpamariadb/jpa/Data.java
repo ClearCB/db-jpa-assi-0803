@@ -1,6 +1,8 @@
 package edu.craptocraft.assibdjpamariadb.jpa;
 
-public interface Printable {
+public interface Data {
 
     void print();
+
+    void createData();
 }

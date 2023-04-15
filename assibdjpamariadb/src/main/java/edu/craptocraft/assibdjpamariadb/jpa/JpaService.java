@@ -54,35 +54,22 @@ public class JpaService {
         }
     }
 
-    public List<Printable> readData(String table) {
+    public List<Data> readData(String table) {
 
         return this.getInstance().runInTransaction(entityManager -> entityManager.createQuery(
-                "select p from " + table + " p", Printable.class).getResultList());
+                "select p from " + table + " p", Data.class).getResultList());
     }
 
-    public void printData(List<Printable> data) {
+    public void printData(List<Data> data) {
 
         data.stream()
-                .forEach(Printable::print);
+                .forEach(Data::print);
 
     }
 
-    public void createData(String table, int id, String... params) {
+    public void createData(Data data) {
 
-        StringBuilder createStatement = new StringBuilder();
-
-        createStatement.append("insert into" + table + "values (");
-
-        for (String param : params) {
-
-            createStatement.append(param + ",");
-        }
-
-        createStatement.deleteCharAt(createStatement.toString().length() - 1);
-        createStatement.append(");");
-
-        JpaService.getInstance().runInTransaction(entityManager -> entityManager.createQuery(
-                createStatement.toString(), Printable.class).getResultList());
+        data.createData();
 
     }
 
