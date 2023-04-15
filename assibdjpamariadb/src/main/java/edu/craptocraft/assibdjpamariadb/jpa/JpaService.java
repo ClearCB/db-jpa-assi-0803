@@ -1,9 +1,6 @@
 package edu.craptocraft.assibdjpamariadb.jpa;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
+import jakarta.persistence.*;
 
 import java.util.function.Function;
 import java.util.List;
@@ -73,12 +70,31 @@ public class JpaService {
 
     }
 
-    public void updateData() {
+    public void updateData(Data data) {
+        data.updateData();
+    }
+
+    public void deleteData(String table, String id) {
+        int rowsDeleted = 0;
+        EntityManager entityManager = JpaService.getInstance().entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            int idValue = Integer.parseInt(id);
+            transaction.begin();
+            Query query = entityManager.createQuery(" DELETE FROM "+ table + " WHERE id = :idParam" );
+            query.setParameter("idParam", idValue);
+            rowsDeleted = query.executeUpdate();
+            transaction.commit();
+            System.out.println("\n\t > Eliminadas "+ rowsDeleted + " filas");
+        } catch (Exception e){
+            transaction.rollback();
+            System.err.println("Se ha producido el siguiente error " + e.getMessage());
+        } finally {
+            entityManager.close();
+        }
 
     }
 
-    public void deleteData() {
-
-    }
 
 }
