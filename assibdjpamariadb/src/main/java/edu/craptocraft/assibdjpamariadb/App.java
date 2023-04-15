@@ -44,15 +44,18 @@ public class App {
 
         System.out.println("\tJPA en acción: ");
 
+        // Creamos instancia del servicio de jpa
         jpaService = JpaService.getInstance();
 
+        // Recuperamos los valores de Users
         List<Data> users = jpaService.readData("Users");
         jpaService.printData(users);
 
         Users newUser = new Users(13555, "Hello22", "pass122",
                 "abelcasasabelcas.com", "2000/2/12");
-        jpaService.createData(newUser);
 
+        // Creamos un nuevo usuario y volvemos a recuperar los valores
+        jpaService.createData(newUser);
         users = jpaService.readData("Users");
         jpaService.printData(users);
 
