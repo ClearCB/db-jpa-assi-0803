@@ -20,13 +20,13 @@ public class JpaService {
 
     public static JpaService getInstance() {
 
-        return instance == null ? instance = new JpaService() : instance;
+        instance = (instance == null) ? new JpaService() : instance;
+        return instance;
     }
 
     public void shutdown() {
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
-            instance = null;
         }
     }
 
@@ -56,7 +56,7 @@ public class JpaService {
 
     public List<Data> readData(String table) {
 
-        return this.getInstance().runInTransaction(entityManager -> entityManager.createQuery(
+        return JpaService.getInstance().runInTransaction(entityManager -> entityManager.createQuery(
                 "select p from " + table + " p", Data.class).getResultList());
     }
 
