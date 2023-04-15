@@ -64,30 +64,22 @@ public class JpaService {
 
     }
 
-    public void createData(Data data) {
+    public void createData(Data... data) {
 
-        data.createData();
-
-    }
-
-    public void updateData(Data data) {
-        data.updateData();
-    }
-
-    public void deleteData(String table, String id) {
-        int rowsDeleted = 0;
         EntityManager entityManager = JpaService.getInstance().entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
 
         try {
-            int idValue = Integer.parseInt(id);
             transaction.begin();
-            Query query = entityManager.createQuery(" DELETE FROM "+ table + " WHERE id = :idParam" );
-            query.setParameter("idParam", idValue);
-            rowsDeleted = query.executeUpdate();
+            for (Data element : data) {
+
+                entityManager.persist(element);
+                System.out.println("\n\t > Elemento: ");
+                element.print();
+                System.out.println(" insertado");
+            }
             transaction.commit();
-            System.out.println("\n\t > Eliminadas "+ rowsDeleted + " filas");
-        } catch (Exception e){
+        } catch (Exception e) {
             transaction.rollback();
             System.err.println("Se ha producido el siguiente error " + e.getMessage());
         } finally {
@@ -96,5 +88,31 @@ public class JpaService {
 
     }
 
+    public void updateData(Data data) {
+        data.updateData();
+    }
+
+    public void deleteData(String table, String id) {
+
+        int rowsDeleted = 0;
+        EntityManager entityManager = JpaService.getInstance().entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            int idValue = Integer.parseInt(id);
+            transaction.begin();
+            Query query = entityManager.createQuery(" DELETE FROM " + table + " WHERE id = :idParam");
+            query.setParameter("idParam", idValue);
+            rowsDeleted = query.executeUpdate();
+            transaction.commit();
+            System.out.println("\n\t > Eliminadas " + rowsDeleted + " filas");
+        } catch (Exception e) {
+            transaction.rollback();
+            System.err.println("Se ha producido el siguiente error " + e.getMessage());
+        } finally {
+            entityManager.close();
+        }
+
+    }
 
 }

@@ -51,29 +51,29 @@ public class App {
         List<Data> users = jpaService.readData("Users");
         jpaService.printData(users);
 
-        System.out.println("\n\t Insertamos al usuario Abel Casas");
+        System.out.println("\n\t Insertamos los usuarios de Abel Casas");
 
-        Users newUser = new Users(13555, "Hello22", "pass122",
+        Users newUser1 = new Users(13555, "Hello22", "pass122",
                 "abelcasasabelcas.com", "2000/2/12");
 
-        // Creamos un nuevo usuario y volvemos a recuperar los valores
-        jpaService.createData(newUser);
+        Users newUser2 = new Users(132555, "Hello232", "pass122",
+                "abelcasasabelcas.com", "2000/2/12");
+
+        // Creamos un nuevos usuarios y volvemos a recuperar los valores
+        jpaService.createData(newUser1, newUser2);
         users = jpaService.readData("Users");
         jpaService.printData(users);
-
 
         System.out.println("\n\t Actualizamos al usuario Abel Casas");
         // Acutalizamos el mismo usuario creado
-        newUser.setEmail("sebastian@example.com");
-        jpaService.updateData(newUser);
+        newUser1.setEmail("sebastian@example.com");
+        jpaService.updateData(newUser1);
 
         users = jpaService.readData("Users");
         jpaService.printData(users);
 
-
         // Borramos el usuario
         jpaService.deleteData("Users", "13555");
-
 
     }
 
