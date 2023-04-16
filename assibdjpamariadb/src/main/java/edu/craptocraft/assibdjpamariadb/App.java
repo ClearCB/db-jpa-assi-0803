@@ -1,9 +1,9 @@
 package edu.craptocraft.assibdjpamariadb;
 
 import edu.craptocraft.assibdjpamariadb.jdbc.PoolHikari;
-import edu.craptocraft.assibdjpamariadb.jpa.JpaService;
-import edu.craptocraft.assibdjpamariadb.jpa.Users;
-import edu.craptocraft.assibdjpamariadb.jpa.Data;
+import edu.craptocraft.assibdjpamariadb.jpa.models.Data;
+import edu.craptocraft.assibdjpamariadb.jpa.models.Users;
+import edu.craptocraft.assibdjpamariadb.jpa.services.JpaService;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -51,29 +51,28 @@ public class App {
         List<Data> users = jpaService.readData("Users");
         jpaService.printData(users);
 
-        System.out.println("\n\t Insertamos al usuario Abel Casas");
+        System.out.println("\n\t Insertamos los usuarios de Abel Casas");
 
-        Users newUser = new Users(13555, "Hello22", "pass122",
+        Users newUser1 = new Users(13555, "Hello22", "pass122",
                 "abelcasasabelcas.com", "2000/2/12");
 
-        // Creamos un nuevo usuario y volvemos a recuperar los valores
-        jpaService.createData(newUser);
-        users = jpaService.readData("Users");
-        jpaService.printData(users);
+        Users newUser2 = new Users(132555, "Hello232", "pass3122",
+                "abelcdasasabelcas.com", "2001/2/12");
 
+        // Creamos un nuevos usuarios y volvemos a recuperar los valores
+        jpaService.createData(newUser1, newUser2);
+        jpaService.printData(users);
 
         System.out.println("\n\t Actualizamos al usuario Abel Casas");
         // Acutalizamos el mismo usuario creado
-        newUser.setEmail("sebastian@example.com");
-        jpaService.updateData(newUser);
-
-        users = jpaService.readData("Users");
-        jpaService.printData(users);
-
+        List<Data> user = jpaService.readOne(13555);
+        jpaService.printData(user);
+        newUser1.setEmail("sebastian@example.com");
+        jpaService.updateData();
 
         // Borramos el usuario
-        jpaService.deleteData("Users", "13555");
-
+        jpaService.deleteData(newUser1, newUser2);
+        jpaService.printData(users);
 
     }
 

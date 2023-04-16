@@ -80,8 +80,8 @@ public class PoolHikari {
             while (resultSet.next()) {
                 String name = resultSet.getString(1);
                 String description = resultSet.getString(2);
-                String release_date = resultSet.getString(2);
-                String platform = resultSet.getString(2);
+                String release_date = resultSet.getString(3);
+                String platform = resultSet.getString(4);
 
                 System.out.println("\t> título : " + name + ", descripción: " + description + ", fecha de salida: "
                         + release_date + " , plataforma " + platform);
