@@ -70,8 +70,6 @@ public class App {
         newUser1.setEmail("sebastian@example.com");
         jpaService.updateData();
 
-        jpaService.printData(user);
-
         // Borramos el usuario
         jpaService.deleteData(newUser1, newUser2);
         jpaService.printData(users);

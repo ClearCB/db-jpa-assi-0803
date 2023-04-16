@@ -9,11 +9,11 @@ import java.util.List;
 public class JpaService {
 
     private static JpaService instance;
-
     private EntityManagerFactory entityManagerFactory;
 
     private JpaService() {
         entityManagerFactory = Persistence.createEntityManagerFactory("mariadb-connection");
+
     }
 
     public static JpaService getInstance() {
@@ -30,7 +30,7 @@ public class JpaService {
 
     public <T> T runInTransaction(Function<EntityManager, T> function) {
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityManager entityManager = JpaService.getInstance().entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
 
         transaction.begin();

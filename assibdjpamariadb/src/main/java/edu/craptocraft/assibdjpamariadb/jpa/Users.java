@@ -102,22 +102,4 @@ public class Users implements Data {
 
     }
 
-    @Override
-    public void updateData() {
-
-        StringBuilder createStatement = new StringBuilder();
-
-        createStatement.append(
-                "update Users set username = ? , password = ? , email = ? , registration_date = ? where id = ?");
-
-        JpaService.getInstance().runInTransaction(entityManager -> entityManager.createNativeQuery(
-                createStatement.toString())
-                .setParameter(1, this.getUsername())
-                .setParameter(2, this.getPassword())
-                .setParameter(3, this.getEmail())
-                .setParameter(4, this.getRegistration_date())
-                .setParameter(5, this.getId())
-                .executeUpdate());
-
-    }
 }
