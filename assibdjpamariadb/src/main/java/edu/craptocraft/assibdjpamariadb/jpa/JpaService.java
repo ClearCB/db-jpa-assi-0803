@@ -3,6 +3,7 @@ package edu.craptocraft.assibdjpamariadb.jpa;
 import jakarta.persistence.*;
 
 import java.util.function.Function;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JpaService {
@@ -57,10 +58,21 @@ public class JpaService {
                 "select p from " + table + " p", Data.class).getResultList());
     }
 
-    public List<Data> readOne(String table, int id) {
+    public List<Data> readOne(int id) {
 
-        return JpaService.getInstance().runInTransaction(entityManager -> entityManager.createQuery(
-                "select p from " + table + " p where id = " + id, Data.class).getResultList());
+        EntityManager entityManager = JpaService.getInstance().entityManagerFactory.createEntityManager();
+        List<Data> rows = new ArrayList<Data>();
+
+        try {
+            Data row = entityManager.find(Users.class, id);
+            rows.add(row);
+        } catch (Exception e) {
+            System.err.println("Se ha producido el siguiente error " + e.getMessage());
+        } finally {
+            entityManager.close();
+        }
+
+        return rows;
     }
 
     public void printData(List<Data> data) {
@@ -94,22 +106,45 @@ public class JpaService {
 
     }
 
-    public void updateData(Data data) {
-        data.updateData();
+    public void updateData() {
+
+        EntityManager entityManager = JpaService.getInstance().entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            transaction.begin();
+            entityManager.flush();
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+            System.err.println("Se ha producido el siguiente error " + e.getMessage());
+        } finally {
+            entityManager.close();
+        }
+
     }
 
-    public void deleteData(String table, String id) {
+    public void deleteData(Data... data) {
 
         int rowsDeleted = 0;
         EntityManager entityManager = JpaService.getInstance().entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
 
         try {
-            int idValue = Integer.parseInt(id);
             transaction.begin();
-            Query query = entityManager.createQuery(" DELETE FROM " + table + " WHERE id = :idParam");
-            query.setParameter("idParam", idValue);
-            rowsDeleted = query.executeUpdate();
+
+            for (Data element : data) {
+
+                System.out.println("\n\t > Elemento: ");
+                element.print();
+                if (!entityManager.contains(element)) {
+                    element = entityManager.merge(element);
+                }
+                entityManager.remove(element);
+                System.out.println(" eliminado");
+                rowsDeleted += 1;
+            }
+
             transaction.commit();
             System.out.println("\n\t > Eliminadas " + rowsDeleted + " filas");
         } catch (Exception e) {
