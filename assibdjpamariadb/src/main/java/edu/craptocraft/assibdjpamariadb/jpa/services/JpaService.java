@@ -1,8 +1,12 @@
-package edu.craptocraft.assibdjpamariadb.jpa;
+package edu.craptocraft.assibdjpamariadb.jpa.services;
 
 import jakarta.persistence.*;
 
 import java.util.function.Function;
+
+import edu.craptocraft.assibdjpamariadb.jpa.models.Data;
+import edu.craptocraft.assibdjpamariadb.jpa.models.Users;
+
 import java.util.ArrayList;
 import java.util.List;
 

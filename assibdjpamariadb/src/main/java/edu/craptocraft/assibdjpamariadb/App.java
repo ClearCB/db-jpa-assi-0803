@@ -1,9 +1,9 @@
 package edu.craptocraft.assibdjpamariadb;
 
 import edu.craptocraft.assibdjpamariadb.jdbc.PoolHikari;
-import edu.craptocraft.assibdjpamariadb.jpa.JpaService;
-import edu.craptocraft.assibdjpamariadb.jpa.Users;
-import edu.craptocraft.assibdjpamariadb.jpa.Data;
+import edu.craptocraft.assibdjpamariadb.jpa.models.Data;
+import edu.craptocraft.assibdjpamariadb.jpa.models.Users;
+import edu.craptocraft.assibdjpamariadb.jpa.services.JpaService;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -1,4 +1,4 @@
-package edu.craptocraft.assibdjpamariadb.jpa;
+package edu.craptocraft.assibdjpamariadb.jpa.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
