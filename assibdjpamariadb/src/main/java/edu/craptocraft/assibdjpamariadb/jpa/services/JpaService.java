@@ -7,6 +7,9 @@ import java.util.function.Function;
 import edu.craptocraft.assibdjpamariadb.jpa.models.Data;
 import edu.craptocraft.assibdjpamariadb.jpa.models.Users;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +33,31 @@ public class JpaService {
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
         }
+    }
+
+    public static void initDB() {
+
+        EntityManager entityManager = JpaService.getInstance().entityManagerFactory.createEntityManager();
+
+        // Cargar el contenido del archivo en una cadena de caracteres
+        String ddlScript;
+        String dmlScript;
+        try {
+            ddlScript = new String(Files.readAllBytes(Paths.get("../../../../../../../../../scripts/DDL.sql")));
+            dmlScript = new String(Files.readAllBytes(Paths.get("../../../../../../../../../scripts/DML.sql")));
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        } finally {
+
+            // consulta
+            Query queryDdl = entityManager.createNativeQuery(ddlScript);
+            Query queryDml = entityManager.createNativeQuery(dmlScript);
+            queryDdl.executeUpdate();
+            queryDml.executeUpdate();
+        }
+
+        // Crear una instancia de Query y establecer el contenido del archivo en la
     }
 
     public <T> T runInTransaction(Function<EntityManager, T> function) {

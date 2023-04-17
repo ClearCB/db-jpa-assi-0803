@@ -1,4 +1,5 @@
 # db-jpa-assi-0803
+
 Database project assigment 8-03. Connection with mariadb using jdbc and jpa
 
 tutorials :  
@@ -10,11 +11,9 @@ tutorials :
 
 ![er-diagram](./docs/ER_diagram.png)
 
-# Docker-Compose
+## Docker-Compose
 
 Para iniciar los contenedores de MariaDB y PhpMyAdmin ejecuta:
 """
 docker-compose up -d 
 """
-
-Posteriormente dirigete en tu navegador a http://localhost:8080 e introduce el usuario y la contraseña del contenedor de mariadb.
