@@ -21,10 +21,6 @@ public class App {
         // Eliminar los logs innecesarios para la aplicación
         Logger.getLogger("org.hibernate").setLevel(Level.OFF);
 
-        System.out.println("Creando base de datos");
-
-        JpaService.getInstance().initDB();
-
         System.out.println("Programando con JDBC y JPA, que emoción!");
 
         System.out.println("\tJDBC en acción: ");

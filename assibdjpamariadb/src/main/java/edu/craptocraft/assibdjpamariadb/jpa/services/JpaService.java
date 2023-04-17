@@ -35,29 +35,6 @@ public class JpaService {
         }
     }
 
-    public void initDB() {
-
-        EntityManager entityManager = JpaService.getInstance().entityManagerFactory.createEntityManager();
-        try {
-            // Cargar el contenido del script en una cadena de caracteres
-            String scriptDdl = new String(Files.readAllBytes(Paths.get("\\scripts\\DDL.sql")));
-            String scriptDml = new String(Files.readAllBytes(Paths.get("\\scripts\\DML.sql")));
-
-            // Crear una instancia de Query y establecer el contenido del script en la
-            // consulta
-            Query queryDdl = entityManager.createNativeQuery(scriptDdl);
-            Query queryDml = entityManager.createNativeQuery(scriptDml);
-
-            queryDdl.executeUpdate();
-            queryDml.executeUpdate();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            entityManager.close();
-        }
-    }
-
     public <T> T runInTransaction(Function<EntityManager, T> function) {
 
         EntityManager entityManager = JpaService.getInstance().entityManagerFactory.createEntityManager();
