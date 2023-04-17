@@ -16,14 +16,14 @@ import java.util.logging.Logger;
  */
 public class App {
 
-    private static JpaService jpaService;
-
     public static void main(String[] args) throws SQLException {
 
         // Eliminar los logs innecesarios para la aplicación
         Logger.getLogger("org.hibernate").setLevel(Level.OFF);
 
-        System.out.println("Creando base de datos...");
+        System.out.println("Creando base de datos");
+
+        JpaService.getInstance().initDB();
 
         System.out.println("Programando con JDBC y JPA, que emoción!");
 
@@ -47,7 +47,7 @@ public class App {
         System.out.println("\tJPA en acción: ");
 
         // Creamos instancia del servicio de jpa
-        jpaService = JpaService.getInstance();
+        JpaService jpaService = JpaService.getInstance();
 
         // Recuperamos los valores de Users
         List<Data> users = jpaService.readData("Users");

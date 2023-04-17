@@ -35,29 +35,27 @@ public class JpaService {
         }
     }
 
-    public static void initDB() {
+    public void initDB() {
 
         EntityManager entityManager = JpaService.getInstance().entityManagerFactory.createEntityManager();
-
-        // Cargar el contenido del archivo en una cadena de caracteres
-        String ddlScript;
-        String dmlScript;
         try {
-            ddlScript = new String(Files.readAllBytes(Paths.get("../../../../../../../../../scripts/DDL.sql")));
-            dmlScript = new String(Files.readAllBytes(Paths.get("../../../../../../../../../scripts/DML.sql")));
-        } catch (IOException e) {
+            // Cargar el contenido del script en una cadena de caracteres
+            String scriptDdl = new String(Files.readAllBytes(Paths.get("\\scripts\\DDL.sql")));
+            String scriptDml = new String(Files.readAllBytes(Paths.get("\\scripts\\DML.sql")));
 
-            e.printStackTrace();
-        } finally {
-
+            // Crear una instancia de Query y establecer el contenido del script en la
             // consulta
-            Query queryDdl = entityManager.createNativeQuery(ddlScript);
-            Query queryDml = entityManager.createNativeQuery(dmlScript);
+            Query queryDdl = entityManager.createNativeQuery(scriptDdl);
+            Query queryDml = entityManager.createNativeQuery(scriptDml);
+
             queryDdl.executeUpdate();
             queryDml.executeUpdate();
-        }
 
-        // Crear una instancia de Query y establecer el contenido del archivo en la
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
     }
 
     public <T> T runInTransaction(Function<EntityManager, T> function) {
