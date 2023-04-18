@@ -1,10 +1,6 @@
 version: '3'
 
-# Se montan dos contenedores, con un volumen para mantener datos
-# Para conectarte a la MariaDB , accedes a localhost:8080 
-# Usuario y contraseña de MariaDB
-
-
+# Create one container with a mariaDB server.
 services:
   db:
     image: mariadb

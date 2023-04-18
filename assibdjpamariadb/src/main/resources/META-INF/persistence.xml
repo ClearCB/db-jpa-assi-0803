@@ -6,7 +6,6 @@
         <properties>
             <property name="jakarta.persistence.jdbc.url"
                 value="jdbc:mariadb://localhost:3306/epicgames" />
-            <!-- TODO CAMBIAR LOS USUARIOS-->
             <property name="jakarta.persistence.jdbc.user" value="root" />
             <property name="jakarta.persistence.jdbc.password" value="0808" />
         </properties>
