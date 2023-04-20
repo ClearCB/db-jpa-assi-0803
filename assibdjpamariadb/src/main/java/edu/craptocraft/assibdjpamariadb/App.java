@@ -10,10 +10,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Hello world!
- *
- */
 public class App {
 
     public static void main(String[] args) throws SQLException {
@@ -59,6 +55,7 @@ public class App {
 
         // Creamos un nuevos usuarios y volvemos a recuperar los valores
         jpaService.createData(newUser1, newUser2);
+        users = jpaService.readData("Users");
         jpaService.printData(users);
 
         System.out.println("\n\t Actualizamos al usuario Abel Casas");
@@ -71,7 +68,6 @@ public class App {
         // Borramos el usuario
         jpaService.deleteData(newUser1, newUser2);
         jpaService.printData(users);
-
     }
 
 }
